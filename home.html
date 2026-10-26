@@ -1,13 +1,119 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/home.css">
-    <link rel="icon" href="./imgs/favicon.png" type="image/x-icon">
-    <title>Nerds</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cultura sneaker con alma geek &amp; neón</title>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/home.css">
 </head>
 <body>
- <button class="btn" type="reset">Reset</button>
+
+  <nav class="nav">
+    <a href="home.html" class="brand">Sneaker<span>.</span>Geek</a>
+    <button class="login-btn" data-open>Accede</button>
+  </nav>
+
+  <main class="hero">
+    <h1>Cultura sneaker con alma <em class="geek">geek</em> &amp; <em class="neon">neón</em></h1>
+
+    <a href="#" class="btn fill">Explorar drops</a>
+
+    <div class="stats">
+      <div><b>24h</b><span>Envíos rápidos</span></div>
+      <div><b>100%</b><span>Pares originales</span></div>
+      <div><b>+5K</b><span>Ediciones coleccionables</span></div>
+    </div>
+  </main>
+
+  <footer>© 2026 Sneaker.Geek. Todos los derechos reservados.</footer>
+
+  <!-- Popup: login y crear cuenta -->
+  <dialog id="login">
+    <button class="close" data-close aria-label="Cerrar">&times;</button>
+
+    <section id="view-login">
+      <h2>Login</h2>
+      <form>
+        <input type="email" name="email" placeholder="Email" aria-label="Email" required>
+        <input type="password" name="password" placeholder="Password" aria-label="Password" required>
+        <button type="submit" class="btn fill">Iniciar</button>
+      </form>
+      <button type="button" class="btn outline-cyan" data-show="register">Crear Cuenta</button>
+    </section>
+
+    <section id="view-register" hidden>
+      <h2>Crear Cuenta</h2>
+      <form>
+        <input type="email" name="email" placeholder="Email" aria-label="Email" required>
+        <input type="password" name="password" placeholder="Password" aria-label="Password" required>
+        <button type="submit" class="btn fill">Crear</button>
+      </form>
+      <button type="button" class="btn outline-cyan" data-show="login">Volver al Login</button>
+    </section>
+  </dialog>
+
+  <!-- Popup: cerrar sesión -->
+  <dialog id="logout">
+    <button class="close" data-close aria-label="Cerrar">&times;</button>
+    <h2>Cerrar sesión</h2>
+    <p>¿Seguro que quieres salir de tu cuenta?</p>
+    <button type="button" class="btn fill" id="confirm-logout">Cerrar sesión</button>
+    <button type="button" class="btn outline-cyan" data-close>Cancelar</button>
+  </dialog>
+
+  <script>
+    const login = document.getElementById('login');
+    const logout = document.getElementById('logout');
+    const navBtn = document.querySelector('[data-open]');
+    let loggedIn = false;
+
+    // Cambia entre las vistas "login" y "register"
+    const show = view => login.querySelectorAll('section').forEach(s => s.hidden = s.id !== 'view-' + view);
+
+    // Cambia el botón del menú: "Accede" / "Salir"
+    const setSession = state => {
+      loggedIn = state;
+      navBtn.textContent = state ? 'Salir' : 'Accede';
+    };
+
+    // Botón del menú: abre el login o el popup de cerrar sesión
+    navBtn.onclick = () => {
+      if (loggedIn) return logout.showModal();
+      show('login');
+      login.showModal();
+    };
+
+    // Todos los popups: cierran con la X, con "Cancelar" o al hacer clic fuera
+    document.querySelectorAll('dialog').forEach(d => {
+      d.onclick = e => { if (e.target === d) d.close(); };
+      d.querySelectorAll('[data-close]').forEach(b => b.onclick = () => d.close());
+    });
+
+    login.onclose = () => login.querySelectorAll('form').forEach(f => f.reset());
+
+    document.querySelectorAll('[data-show]').forEach(btn => {
+      btn.onclick = () => show(btn.dataset.show);
+    });
+
+    document.querySelector('#view-login form').onsubmit = e => {
+      e.preventDefault();
+      // TODO: enviar email y password a tu servidor (iniciar sesión)
+      setSession(true);
+      login.close();
+    };
+    document.querySelector('#view-register form').onsubmit = e => {
+      e.preventDefault();
+      // TODO: enviar email y password a tu servidor (crear cuenta)
+      setSession(true);
+      login.close();
+    };
+
+    document.getElementById('confirm-logout').onclick = () => {
+      // TODO: avisar a tu servidor que se cerró la sesión
+      setSession(false);
+      logout.close();
+    };
+  </script>
 </body>
 </html>

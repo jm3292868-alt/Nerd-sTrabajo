@@ -1,1 +1,99 @@
-.btn{background-color:#26a69a}
+/* css/home.css — CSS común, sin frameworks */
+:root {
+  --bg: #0a0614; --soft: #140c26;
+  --violet: #8b3dff; --magenta: #ff3df0; --cyan: #3df5ff;
+  --text: #f4efff; --muted: #a89cc4; --line: rgba(139, 61, 255, .3);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; min-height: 100vh; min-height: 100dvh;
+  display: flex; flex-direction: column;
+  background: var(--bg); color: var(--text);
+  font-family: 'Space Grotesk', sans-serif;
+}
+a { color: inherit; text-decoration: none; }
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+h1, h2 { margin: 0; font-family: 'Chakra Petch', sans-serif; }
+
+/* Navbar */
+.nav {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 72px; padding: 0 32px; border-bottom: 1px solid var(--line);
+}
+.brand { font: 700 1.5rem 'Chakra Petch', sans-serif; }
+.brand span { color: var(--magenta); }
+.login-btn { padding: 8px 20px; border: 0; border-radius: 999px; background: none; }
+.login-btn:hover { background: rgba(255, 255, 255, .08); }
+
+/* Hero (ocupa toda la pantalla) */
+.hero {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 24px 32px; text-align: center;
+  background:
+    radial-gradient(700px 380px at 12% 25%, rgba(139, 61, 255, .38), transparent 70%),
+    radial-gradient(600px 380px at 88% 78%, rgba(255, 61, 240, .24), transparent 70%);
+}
+h1 {
+  max-width: 900px; margin-bottom: 36px;
+  font-size: clamp(2rem, min(5.6vw, 9.5vh), 4.6rem);
+  line-height: 1.08; letter-spacing: .02em; text-transform: uppercase;
+}
+h1 em { font-style: normal; }
+.geek { color: var(--cyan); text-shadow: 0 0 18px rgba(61, 245, 255, .6); }
+.neon { color: var(--magenta); text-shadow: 0 0 18px rgba(255, 61, 240, .7); }
+
+/* Botones */
+.btn {
+  display: inline-block; padding: 15px 34px; border: 0; border-radius: 999px;
+  font-weight: 600; transition: box-shadow .2s, background .2s;
+}
+.fill { background: linear-gradient(90deg, var(--violet), var(--magenta)); box-shadow: 0 0 24px rgba(139, 61, 255, .55); }
+.fill:hover { box-shadow: 0 0 36px rgba(255, 61, 240, .7); }
+
+/* Estadísticas */
+.stats {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+  width: 100%; max-width: 860px; margin-top: clamp(28px, 7vh, 60px);
+}
+.stats div {
+  display: flex; flex-direction: column; gap: 4px; padding: 18px 12px;
+  border: 1px solid var(--line); border-radius: 16px; background: rgba(139, 61, 255, .07);
+}
+.stats b { font: 700 1.8rem 'Chakra Petch', sans-serif; }
+.stats span { color: var(--muted); font-size: .88rem; }
+
+footer {
+  padding: 14px; background: var(--soft); border-top: 1px solid var(--line);
+  color: var(--muted); font-size: .82rem; text-align: center;
+}
+
+/* Popup (login / crear cuenta) */
+dialog {
+  width: 380px; max-width: 92vw; margin: auto; padding: 32px; color: var(--text);
+  border: 1.5px solid transparent; border-radius: 22px;
+  background:
+    linear-gradient(var(--soft), var(--soft)) padding-box,
+    linear-gradient(135deg, var(--violet), var(--magenta), var(--cyan)) border-box;
+  box-shadow: 0 0 50px rgba(139, 61, 255, .4);
+}
+dialog::backdrop { background: rgba(5, 2, 13, .8); backdrop-filter: blur(6px); }
+dialog h2 { margin-bottom: 24px; text-align: center; font-size: 2rem; color: var(--cyan); text-shadow: 0 0 16px rgba(61, 245, 255, .55); }
+dialog p { margin: 0 0 24px; text-align: center; color: var(--muted); }
+dialog input {
+  display: block; width: 100%; height: 48px; margin-bottom: 14px; padding: 0 16px;
+  border: 1px solid var(--muted); border-radius: 12px; background: transparent; text-align: center;
+}
+dialog input:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(61, 245, 255, .2); }
+dialog .btn { width: 100%; }
+.outline-cyan { margin-top: 16px; border: 1px solid var(--cyan); background: none; color: var(--cyan); }
+.outline-cyan:hover { background: rgba(61, 245, 255, .1); }
+.close { position: absolute; top: 10px; right: 14px; border: 0; background: none; color: var(--muted); font-size: 1.8rem; }
+
+/* Móvil */
+@media (max-width: 600px) {
+  .nav { height: 64px; padding: 0 16px; }
+  .hero { padding: 32px 16px; }
+  .hero > .btn { width: 100%; }
+  .stats { grid-template-columns: 1fr; gap: 10px; }
+}
