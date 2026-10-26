@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inventario | Nerds Snkrz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alike&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/inventario (1).css">
+</head>
+<body>
+ 
+  <header class="header">
+    <img class="header__logo" alt="Nerds Snkrz">
+    <img class="header__icon" src="imgs/favicon.png" alt="Icono NS">
+    <h1 class="header__titulo">Inventario de Productos</h1>
+    <a class="header__link" href="./catalogo.html">Ver catálogo</a>
+  </header>
+ 
+  <main class="layout">
+ 
+    <!-- IZQUIERDA: existencias -->
+    <section class="panel panel--tabla" aria-labelledby="titulo-lista">
+      <h2 class="sr-only" id="titulo-lista">Lista de productos</h2>
+ 
+      <div class="resumen" id="resumen">
+        <div class="stat"><span class="stat__num" id="stat-pares">0</span><span class="stat__txt">pares en existencia</span></div>
+        <div class="stat"><span class="stat__num" id="stat-modelos">0</span><span class="stat__txt">modelos</span></div>
+        <div class="stat stat--alerta"><span class="stat__num" id="stat-agotados">0</span><span class="stat__txt">agotados</span></div>
+      </div>
+ 
+      <div class="tabla-wrap">
+        <table class="tabla">
+          <thead>
+            <tr>
+              <th>Imagen</th><th>Nombre</th><th>Precio</th><th>Stock</th><th>Estado</th><th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </section>
+ 
+    <!-- DERECHA: formulario -->
+    <aside class="panel panel--form">
+      <h2 class="form__titulo" id="form-titulo">Agregar Producto</h2>
+ 
+      <form id="form" novalidate>
+        <div class="form__top">
+          <button type="button" class="img-box" id="img-box" aria-label="Elegir imagen del producto">
+            <img id="img-preview" alt="" hidden>
+            <span id="img-hint">+ Imagen</span>
+          </button>
+          <input type="file" id="img-input" accept="image/*" hidden>
+ 
+          <div class="form__campos">
+            <label>Nombre
+              <input id="f-nombre" maxlength="60" required>
+            </label>
+            <label>Precio (MXN)
+              <input id="f-precio" type="number" min="1" step="0.01" inputmode="decimal" required>
+            </label>
+          </div>
+        </div>
+ 
+        <label>Descripción
+          <textarea id="f-desc" rows="3" maxlength="140"></textarea>
+        </label>
+ 
+        <div class="form__fila">
+          <label class="grow">Tallas MX
+            <input id="f-tallas" placeholder="27, 28, 29, 30" required>
+          </label>
+          <label class="stock">Stock
+            <input id="f-stock" type="number" min="0" step="1" inputmode="numeric" required>
+          </label>
+        </div>
+ 
+        <p class="msg" id="msg" role="status" aria-live="polite"></p>
+ 
+        <div class="form__botones">
+          <button type="button" class="btn-cancelar" id="btn-cancelar">Cancelar</button>
+          <button type="submit" class="btn-guardar">Guardar</button>
+        </div>
+      </form>
+    </aside>
+ 
+  </main>
+ 
+  <footer class="footer">
+    <img src="imgs/NSLOGO.jpg" alt="Icono NS" class="footer__icon">
+    <p class="footer__copyright">&copy; 2026 Nerds Snkrz. Todos los derechos reservados.</p>
+  </footer>
+ 
+  <script src="./js/productos (1).js"></script>
+  <script src="./js/inventario (1).js"></script>
+</body>
+</html>
