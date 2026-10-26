@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nerds Snkrz - Carrito</title>
+  <link rel="stylesheet" href="/css/compra.css">
+</head>
+<body>
+  <header>
+    <h1>NERDS SNKRZ</h1>
+    <img src="/imgs/favicon.png" alt="Logo de Nerds Snkrz" width="40" height="40">
+    <nav>
+      <ul>
+        <li><a href="home.html">Inicio</a></li>
+        <li><a href="catalogo.html">Catálogo</a></li>
+      </ul>
+    </nav>
+    <a href="carrito.html">
+      <img src="/imgs/carrito.webp" alt="Carrito de compras" width="40" height="40">
+    </a>
+  </header>
+  <main>
+    <section>
+      <h2>Carrito de compras</h2>
+
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><img src="/imgs/teni1.webp" alt="Tenis 1" width="80"></td>
+            <td>$ 6,500.00</td>
+            <td>
+                <button type="button" class="menos">-</button>
+                <span class="cantidad">1</span>
+                <button type="button" class="mas">+</button>
+            </td>
+          </tr>
+          <tr>
+            <td><img src="/imgs/teni2.webp" alt="Tenis 2" width="80"></td>
+            <td>$ 7,500.00</td>
+            <td>
+              <button type="button" class="menos">-</button>
+              <span class="cantidad">1</span>
+              <button type="button" class="mas">+</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <aside>
+      <h2>Resumen de Compra</h2>
+      <p>Subtotal (2 productos): <span>$14,000</span></p>
+      <p>Costo de Envío: <span>$1,000</span></p>
+      <a href="#">Calcular Envío</a>
+      <hr>
+      <p>Total: <strong>$15,000</strong></p>
+      <button type="button">Proceder con el pago →</button>
+      <p><small>Compra 100% Segura</small></p>
+    </aside>
+  </main>
+  <footer>
+    <img src="/imgs/favicon.png" alt="Logo de Nerds Snkrz" width="30" height="30">
+    <a href="https://RedSocial.com">Nerds Snkrz.com</a>
+  </footer>
+  <script src="/js/compra.js"></script>
+</body>
+</html>
