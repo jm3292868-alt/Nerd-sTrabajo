@@ -1,115 +1,143 @@
-const ENVIO = 1000;
-const cuerpoTabla = document.querySelector("tbody");
+// ---------- ELEMENTOS DEL DOM ----------
+const cartTbody = document.getElementById("cart-tbody");
+const numProductosSpan = document.getElementById("num-productos");
+const subtotalSpan = document.getElementById("subtotal");
+const envioSpan = document.getElementById("envio");
+const totalSpan = document.getElementById("total");
+const totalModalSpan = document.getElementById("total-modal");
 
-function leerPrecio(texto) {
-  return Number(texto.replace(/[^0-9.]/g, ""));
-}
-
-function formato(numero) {
-  return "$" + numero.toLocaleString("es-MX");
-}
-
-
-function actualizarResumen() {
-  let subtotal = 0;
-  let productos = 0;
-
-  cuerpoTabla.querySelectorAll("tr").forEach(function (fila) {
-    const precio = leerPrecio(fila.children[1].textContent);
-    const cantidad = Number(fila.querySelector(".cantidad").textContent);
-
-    subtotal += precio * cantidad;
-    productos += cantidad;
-  });
-
-  document.getElementById("num-productos").textContent = productos;
-  document.getElementById("subtotal").textContent = formato(subtotal);
-  document.getElementById("envio").textContent = formato(ENVIO);
-  document.getElementById("total").textContent = formato(subtotal + ENVIO);
-}
-
-
-cuerpoTabla.addEventListener("click", function (evento) {
-  const boton = evento.target;
-  const fila = boton.closest("tr");
-  if (!fila) return;
-
-  const cantidad = fila.querySelector(".cantidad");
-
-  if (boton.classList.contains("mas")) {
-    cantidad.textContent = Number(cantidad.textContent) + 1;
-    actualizarResumen();
-  }
-
-  if (boton.classList.contains("menos") && Number(cantidad.textContent) > 1) {
-    cantidad.textContent = Number(cantidad.textContent) - 1;
-    actualizarResumen();
-  }
-});
-
-
-function agregarProducto(imagen, nombre, precio) {
-  const fila = document.createElement("tr");
-  fila.innerHTML =
-    '<td><img src="' + imagen + '" alt="' + nombre + '" width="80"></td>' +
-    '<td><span class="precio">$ ' + precio.toLocaleString("es-MX") + '.00</span></td>' +
-    '<td>' +
-      '<button type="button" class="menos">-</button> ' +
-      '<span class="cantidad">1</span> ' +
-      '<button type="button" class="mas">+</button>' +
-    '</td>';
-
-  cuerpoTabla.appendChild(fila);
-  actualizarResumen();
-}
-
-actualizarResumen();
-
-const ventana = document.getElementById("ventana-datos");
+const btnPago = document.getElementById("btn-pago");
+const ventanaDatos = document.getElementById("ventana-datos");
+const btnCancelar = document.getElementById("btn-cancelar");
 const formDatos = document.getElementById("form-datos");
 
+const COSTO_ENVIO = 1000; // Puedes ajustar el costo de envío fijo o hacerlo dinámico
 
-document.getElementById("btn-pago").addEventListener("click", function () {
-  document.getElementById("total-modal").textContent =
-    document.getElementById("total").textContent;
-  ventana.showModal();
-});
+// ---------- CARRITO (localStorage) ----------
+const leerCarrito = () => JSON.parse(localStorage.getItem("carrito") || "[]");
+const guardarCarrito = (c) => localStorage.setItem("carrito", JSON.stringify(c));
 
+// ---------- RENDERIZAR CARRITO ----------
+function renderCarrito() {
+  const carrito = leerCarrito();
+  cartTbody.innerHTML = "";
 
-document.getElementById("btn-cancelar").addEventListener("click", function () {
-  ventana.close();
-});
-
-
-ventana.addEventListener("click", function (evento) {
-  if (evento.target === ventana) {
-    ventana.close();
+  if (carrito.length === 0) {
+    cartTbody.innerHTML = `
+      <tr>
+        <td colspan="3" style="text-align: center; padding: 20px; color: #666;">
+          Tu carrito está vacío. <a href="./catalogo.html" style="color: inherit; text-decoration: underline;">Ir al catálogo</a>
+        </td>
+      </tr>
+    `;
+    actualizarResumen(0, 0);
+    btnPago.disabled = true;
+    return;
   }
+
+  btnPago.disabled = false;
+  let subtotalAcumulado = 0;
+  let totalCantidadItems = 0;
+
+  carrito.forEach((item, index) => {
+    // Si el item no tiene cantidad asignada por defecto, le ponemos 1
+    const cantidad = item.cantidad || 1;
+    subtotalAcumulado += item.precio * cantidad;
+    totalCantidadItems += cantidad;
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <img src="${item.img}" alt="${esc(item.nombre)}" width="80" style="border-radius: 6px; object-fit: cover;">
+          <div>
+            <strong>${esc(item.nombre)}</strong><br>
+            <small style="color: #666;">Talla: ${item.talla} MX</small>
+          </div>
+        </div>
+      </td>
+      <td><span class="precio">${dinero(item.precio * cantidad)}</span></td>
+      <td>
+        <button type="button" class="menos" onclick="cambiarCantidad(${index}, -1)">-</button>
+        <span class="cantidad">${cantidad}</span>
+        <button type="button" class="mas" onclick="cambiarCantidad(${index}, 1)">+</button>
+      </td>
+    `;
+    cartTbody.appendChild(tr);
+  });
+
+  actualizarResumen(totalCantidadItems, subtotalAcumulado);
+}
+
+// ---------- CAMBIAR CANTIDADES O ELIMINAR ----------
+window.cambiarCantidad = function(index, delta) {
+  const carrito = leerCarrito();
+  if (!carrito[index]) return;
+
+  carrito[index].cantidad = (carrito[index].cantidad || 1) + delta;
+
+  if (carrito[index].cantidad <= 0) {
+    carrito.splice(index, 1); // Si baja a 0, se elimina del carrito
+  }
+
+  guardarCarrito(carrito);
+  renderCarrito();
+};
+
+// ---------- ACTUALIZAR RESUMEN ----------
+function actualizarResumen(cantidadItems, subtotal) {
+  const totalConEnvio = subtotal > 0 ? subtotal + COSTO_ENVIO : 0;
+
+  numProductosSpan.textContent = cantidadItems;
+  subtotalSpan.textContent = dinero(subtotal);
+  envioSpan.textContent = subtotal > 0 ? dinero(COSTO_ENVIO) : "$0.00";
+  totalSpan.textContent = dinero(totalConEnvio);
+  totalModalSpan.textContent = dinero(totalConEnvio);
+}
+
+// ---------- CONTROL DEL MODAL (DIALOG) ----------
+btnPago.addEventListener("click", () => {
+  const carrito = leerCarrito();
+  if (carrito.length === 0) return;
+  ventanaDatos.showModal();
 });
 
-
-formDatos.addEventListener("submit", function (evento) {
-  evento.preventDefault();
-
-  const datos = {
-    nombre: document.getElementById("nombre").value,
-    apellido: document.getElementById("apellido").value,
-    correo: document.getElementById("correo").value,
-    telefono: document.getElementById("telefono").value,
-    direccion:
-      document.getElementById("calle").value + " " +
-      document.getElementById("numero").value + ", " +
-      document.getElementById("colonia").value + ", " +
-      document.getElementById("ciudad").value + ", " +
-      document.getElementById("estado").value + ", CP " +
-      document.getElementById("cp").value,
-    entrega: document.getElementById("tipo-entrega").value,
-    referencias: document.getElementById("referencias").value
-  };
-
-  console.log("Datos del pedido:", datos);
-
-  ventana.close();
-  formDatos.reset();
-  alert("¡Gracias, " + datos.nombre + "! Tu pedido fue registrado.");
+btnCancelar.addEventListener("click", () => {
+  ventanaDatos.close();
 });
+
+// ---------- CONFIRMAR PEDIDO Y DESCONTAR STOCK ----------
+formDatos.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const carrito = leerCarrito();
+  if (carrito.length === 0) return;
+
+  // Agrupar compras por id para calcular el stock total a descontar
+  const lineas = [];
+  carrito.forEach((item) => {
+    const cant = item.cantidad || 1;
+    const existe = lineas.find((l) => l.id === item.id);
+    if (existe) {
+      existe.cantidad += cant;
+    } else {
+      lineas.push({ id: item.id, cantidad: cant });
+    }
+  });
+
+  // Descontar del inventario centralizado (función de productos.js)
+  if (typeof descontarStock === 'function') {
+    descontarStock(lineas);
+  }
+
+  alert("¡Compra exitosa! Gracias por tu pedido en Nerds Snkrz.");
+  
+  // Limpiar carrito
+  guardarCarrito([]);
+  ventanaDatos.close();
+  
+  // Redirigir al inicio o catálogo
+  window.location.href = "catalogo.html";
+});
+
+// ---------- INICIALIZACIÓN ----------
+renderCarrito();

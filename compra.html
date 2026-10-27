@@ -8,7 +8,6 @@
 </head>
 <body>
 
- 
   <header>
     <h1>NERDS SNKRZ</h1>
     <img src="imgs/favicon.png" alt="Logo de Nerds Snkrz" width="40" height="40">
@@ -19,13 +18,9 @@
         <li><a href="./catalogo.html">Catálogo</a></li>
       </ul>
     </nav>
-
   </header>
 
-
   <main>
-
-    
     <section>
       <h2>Carrito de compras</h2>
 
@@ -37,112 +32,103 @@
             <th>Cantidad</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td><img src="img/tenis1.jpg" alt="Tenis 1" width="80"></td>
-            <td><span class="precio">$ 6,500.00</span></td>
-            <td>
-              <button type="button" class="menos">-</button>
-              <span class="cantidad">1</span>
-              <button type="button" class="mas">+</button>
-            </td>
-          </tr>
+        <tbody id="cart-tbody">
+          <!-- Se llenará dinámicamente con JavaScript -->
         </tbody>
       </table>
     </section>
-
     
     <aside>
       <h2>Resumen de Compra</h2>
 
-      <p>Subtotal (<span id="num-productos">1</span> productos): <span id="subtotal">$6,500</span></p>
-      <p>Costo de Envío: <span id="envio">$1,000</span></p>
+      <p>Subtotal (<span id="num-productos">0</span> productos): <span id="subtotal">$0.00</span></p>
+      <p>Costo de Envío: <span id="envio">$1,000.00</span></p>
 
       <a href="#">Calcular Envío</a>
 
       <hr>
 
-      <p>Total: <strong id="total">$7,500</strong></p>
+      <p>Total: <strong id="total">$0.00</strong></p>
 
-     <button type="button" id="btn-pago">Proceder con el pago →</button>
+      <button type="button" id="btn-pago" disabled>Proceder con el pago →</button>
 
       <p><small>Compra 100% Segura</small></p>
     </aside>
-
   </main>
 
-  
   <footer>
     <img src="imgs/favicon.png" alt="Logo de Nerds Snkrz" width="30" height="30">
     <a href="https://RedSocial.com">RedSocial.com</a>
-    
   </footer>
 
-<dialog id="ventana-datos">
-  <form id="form-datos" method="dialog">
-    <h2>Datos de compra</h2>
+  <dialog id="ventana-datos">
+    <form id="form-datos" method="dialog">
+      <h2>Datos de compra</h2>
 
-    <fieldset>
-      <legend>Datos del cliente</legend>
+      <fieldset>
+        <legend>Datos del cliente</legend>
 
-      <label for="nombre">Nombre</label>
-      <input type="text" id="nombre" name="nombre" required>
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" required>
 
-      <label for="apellido">Apellido</label>
-      <input type="text" id="apellido" name="apellido" required>
+        <label for="apellido">Apellido</label>
+        <input type="text" id="apellido" name="apellido" required>
 
-      <label for="correo">Correo electrónico</label>
-      <input type="email" id="correo" name="correo" required>
+        <label for="correo">Correo electrónico</label>
+        <input type="email" id="correo" name="correo" required>
 
-      <label for="telefono">Teléfono</label>
-      <input type="tel" id="telefono" name="telefono" pattern="[0-9]{10}" maxlength="10" placeholder="10 dígitos" required>
-    </fieldset>
+        <label for="telefono">Teléfono</label>
+        <input type="tel" id="telefono" name="telefono" pattern="[0-9]{10}" maxlength="10" placeholder="10 dígitos" required>
+      </fieldset>
 
-    <fieldset>
-      <legend>Domicilio</legend>
+      <fieldset>
+        <legend>Domicilio</legend>
 
-      <label for="calle">Calle</label>
-      <input type="text" id="calle" name="calle" required>
+        <label for="calle">Calle</label>
+        <input type="text" id="calle" name="calle" required>
 
-      <label for="numero">Número</label>
-      <input type="text" id="numero" name="numero" required>
+        <label for="numero">Número</label>
+        <input type="text" id="numero" name="numero" required>
 
-      <label for="colonia">Colonia</label>
-      <input type="text" id="colonia" name="colonia" required>
+        <label for="colonia">Colonia</label>
+        <input type="text" id="colonia" name="colonia" required>
 
-      <label for="ciudad">Ciudad</label>
-      <input type="text" id="ciudad" name="ciudad" required>
+        <label for="ciudad">Ciudad</label>
+        <input type="text" id="ciudad" name="ciudad" required>
 
-      <label for="estado">Estado</label>
-      <input type="text" id="estado" name="estado" required>
+        <label for="estado">Estado</label>
+        <input type="text" id="estado" name="estado" required>
 
-      <label for="cp">Código postal</label>
-      <input type="text" id="cp" name="cp" pattern="[0-9]{5}" maxlength="5" required>
-    </fieldset>
+        <label for="cp">Código postal</label>
+        <input type="text" id="cp" name="cp" pattern="[0-9]{5}" maxlength="5" required>
+      </fieldset>
 
-    <fieldset>
-      <legend>Lugar de entrega</legend>
+      <fieldset>
+        <legend>Lugar de entrega</legend>
 
-      <label for="tipo-entrega">Tipo de entrega</label>
-      <select id="tipo-entrega" name="tipo-entrega" required>
-        <option value="">Selecciona una opción</option>
-        <option value="domicilio">En mi domicilio</option>
-        <option value="otra-direccion">En otra dirección</option>
-        <option value="sucursal">Recoger en sucursal</option>
-      </select>
+        <label for="tipo-entrega">Tipo de entrega</label>
+        <select id="tipo-entrega" name="tipo-entrega" required>
+          <option value="">Selecciona una opción</option>
+          <option value="domicilio">En mi domicilio</option>
+          <option value="otra-direccion">En otra dirección</option>
+          <option value="sucursal">Recoger en sucursal</option>
+        </select>
 
-      <label for="referencias">Referencias de entrega</label>
-      <textarea id="referencias" name="referencias" rows="3" placeholder="Ej. Casa azul, portón negro, entre calles..."></textarea>
-    </fieldset>
+        <label for="referencias">Referencias de entrega</label>
+        <textarea id="referencias" name="referencias" rows="3" placeholder="Ej. Casa azul, portón negro, entre calles..."></textarea>
+      </fieldset>
 
-    <p>Total a pagar: <strong id="total-modal">$0</strong></p>
+      <p>Total a pagar: <strong id="total-modal">$0.00</strong></p>
 
-    <div class="botones-modal">
-      <button type="button" id="btn-cancelar">Cancelar</button>
-      <button type="submit" id="btn-confirmar">Confirmar pedido</button>
-    </div>
-  </form>
-</dialog>
-  <script src="/js/compra.js"></script>
+      <div class="botones-modal">
+        <button type="button" id="btn-cancelar">Cancelar</button>
+        <button type="submit" id="btn-confirmar">Confirmar pedido</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Scripts necesarios -->
+  <script src="./js/productos (1).js"></script>
+  <script src="./js/compra.js"></script>
 </body>
 </html>
